@@ -37,7 +37,7 @@ void ADamager::OnComponentHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 	
 
-		UGameplayStatics::ApplyDamage(OtherActor, 1.f, GetWorld()->GetFirstPlayerController(), this, UDamageType::StaticClass());
+	UGameplayStatics::ApplyDamage(OtherActor, 1.f, GetWorld()->GetFirstPlayerController(), this, UDamageType::StaticClass());
 	
 	
 

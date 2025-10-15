@@ -31,6 +31,7 @@ class AConsoleProj_HudUnCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FirstPersonCameraComponent;
 
+	
 protected:
 
 	/** Jump Input Action */

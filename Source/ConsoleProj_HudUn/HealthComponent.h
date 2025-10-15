@@ -16,6 +16,13 @@ public:
 	// Sets default values for this component's properties
 	UHealthComponent();
 
+
+	UPROPERTY(EditDefaultsOnly, Category = "Health Properties")
+	float MaxHealth = 100.f;
+
+	
+	float Health;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

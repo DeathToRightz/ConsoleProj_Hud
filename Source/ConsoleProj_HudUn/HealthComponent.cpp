@@ -19,6 +19,8 @@ UHealthComponent::UHealthComponent()
 		UE_LOG(LogTemp, Warning, TEXT("Actor connected"));
 
 		Owner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::TakeDamage); //Bind the take damage method to the player
+
+		Health = MaxHealth;
 	}
 }
 
@@ -46,5 +48,11 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const UDam
 	//Handle taking damage
 
 	UE_LOG(LogTemp, Warning, TEXT("Actor Took Damage"));
+
+	Health -= Damage;
+
+	Health = FMath::Clamp(Health, 0, MaxHealth);
+
+	UE_LOG(LogTemp, Warning, TEXT("Current Health: %f"), Health);
 }
 
