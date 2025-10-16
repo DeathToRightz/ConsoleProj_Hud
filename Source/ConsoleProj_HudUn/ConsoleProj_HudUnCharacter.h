@@ -32,6 +32,7 @@ class AConsoleProj_HudUnCharacter : public ACharacter
 	UCameraComponent* FirstPersonCameraComponent;
 
 	
+	
 protected:
 
 	/** Jump Input Action */
@@ -90,6 +91,9 @@ public:
 
 	/** Returns first person camera component **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Destroyed Objects")
+	int DestroyedObjects;
 
 };
 
