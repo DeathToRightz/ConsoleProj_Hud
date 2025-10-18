@@ -38,4 +38,9 @@ public:
 	UPROPERTY()
 	AActor* Owner;
 
+	UPROPERTY()
+	TSubclassOf<UUserWidget> MyWidgetClass;
+
+	UPROPERTY()
+	UUserWidget* MyWidgetInstance;
 };

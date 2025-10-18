@@ -4,6 +4,9 @@
 
 #include "HealthComponent.h"
 
+#include "Blueprint/UserWidget.h" // Required for CreateWidget
+
+
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
 {
@@ -23,6 +26,19 @@ UHealthComponent::UHealthComponent()
 
 		Health = MaxHealth;
 	}
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetBPClass(TEXT("/Game/Widgets/Widget_Lose"));
+
+	if (WidgetBPClass.Succeeded())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Widget Found"));
+
+		
+		MyWidgetClass = WidgetBPClass.Class;
+		
+		//VictoryWidgetClass = WidgetBPClass.Class;
+	}
+
 }
 
 
@@ -61,6 +77,10 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const UDam
 		FString::Printf(TEXT("Current Health is: %f"), Health) 
 	);
 
-	
+	//Displays Widget when Health is 0
+	if (Health == 0)
+	{
+		
+	}
 }
 
