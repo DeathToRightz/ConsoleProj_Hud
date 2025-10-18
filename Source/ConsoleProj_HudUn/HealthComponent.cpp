@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Engine/Engine.h" // Required for GEngine
 
 #include "HealthComponent.h"
 
@@ -47,12 +48,19 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const UDam
 {
 	//Handle taking damage
 
-	UE_LOG(LogTemp, Warning, TEXT("Actor Took Damage"));
+	
 
 	Health -= Damage;
 
 	Health = FMath::Clamp(Health, 0, MaxHealth);
 
-	UE_LOG(LogTemp, Warning, TEXT("Current Health: %f"), Health);
+	GEngine->AddOnScreenDebugMessage(
+		-1,            
+		5.0f,         
+		FColor::Red,
+		FString::Printf(TEXT("Current Health is: %f"), Health) 
+	);
+
+	
 }
 
