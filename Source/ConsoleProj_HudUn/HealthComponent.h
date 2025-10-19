@@ -43,4 +43,7 @@ public:
 
 	UPROPERTY()
 	UUserWidget* MyWidgetInstance;
+
+	UPROPERTY()
+	APlayerController* PlayerController;
 };

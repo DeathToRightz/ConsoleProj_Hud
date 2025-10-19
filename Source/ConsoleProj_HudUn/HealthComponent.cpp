@@ -5,6 +5,8 @@
 #include "HealthComponent.h"
 
 #include "Blueprint/UserWidget.h" // Required for CreateWidget
+#include <Kismet/GameplayStatics.h>
+//#include <Kismet/GameplayStatics.h>
 
 
 // Sets default values for this component's properties
@@ -18,6 +20,7 @@ UHealthComponent::UHealthComponent()
 
 	Owner = GetOwner(); //Get our parent the actor/Player
 
+	
 	if (Owner)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Actor connected"));
@@ -27,18 +30,20 @@ UHealthComponent::UHealthComponent()
 		Health = MaxHealth;
 	}
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetBPClass(TEXT("/Game/Widgets/Widget_Lose"));
-
-	if (WidgetBPClass.Succeeded())
+	if (!MyWidgetClass)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Widget Found"));
+		static ConstructorHelpers::FClassFinder<UUserWidget> WidgetBPClass(TEXT("/Game/Widgets/Widget_Lose"));
+		if (WidgetBPClass.Succeeded())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Widget Found"));
 
-		
-		MyWidgetClass = WidgetBPClass.Class;
-		
-		//VictoryWidgetClass = WidgetBPClass.Class;
+
+			MyWidgetClass = WidgetBPClass.Class;
+
+		}
 	}
 
+	
 }
 
 
@@ -47,7 +52,22 @@ void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	if (MyWidgetClass && !MyWidgetInstance)
+	{
+		MyWidgetInstance = CreateWidget<UUserWidget>(GetWorld(), MyWidgetClass);
+
+		if (MyWidgetInstance)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Lose widget created successfully"));
+
+		}
+	}
+	
+
+	if (!PlayerController)
+	{
+		PlayerController = GetWorld()->GetFirstPlayerController();
+	}
 	
 }
 
@@ -65,8 +85,10 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const UDam
 	//Handle taking damage
 
 	
-
-	Health -= Damage;
+	
+		Health -= Damage;
+	
+	
 
 	Health = FMath::Clamp(Health, 0, MaxHealth);
 
@@ -77,10 +99,26 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const UDam
 		FString::Printf(TEXT("Current Health is: %f"), Health) 
 	);
 
-	//Displays Widget when Health is 0
-	if (Health == 0)
+	
+
+	if (Health == 0 && MyWidgetInstance && !MyWidgetInstance->IsInViewport())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Display Widget"));
+
+		MyWidgetInstance->AddToViewport();
+
+		if (PlayerController)
+		{
+			FInputModeUIOnly InputMode;
+			PlayerController->SetInputMode(InputMode);
+			PlayerController->bShowMouseCursor = true;
+			UGameplayStatics::SetGamePaused(GetWorld(), true);
+		}
+	
+
+
 		
 	}
+	
 }
 
