@@ -26,6 +26,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UBoxComponent* BoxCollider;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, CATEGORY = "Damge Amount")
+	float damage;
+
 	
 	UFUNCTION()
 	void OnComponentHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
